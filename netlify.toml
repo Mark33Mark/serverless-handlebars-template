@@ -1,0 +1,21 @@
+[build]
+    publish     = "public"
+    functions   = "netlify/functions"
+
+[dev]
+    autoLaunch=true
+    port        = 8989
+
+[functions]
+    [functions.hello]
+        included_files = ["templates/hello.hbs"]
+
+[[redirects]]
+    from        = "/"
+    to          = "/.netlify/functions/hello"
+    status      = 200
+    force       = true
+
+    # force = true set in redirect to send all requests to your function even if content is found.
+    # As my root directory (public) has a index.html file, this file is served first without the 'force'
+    # setting to true.
