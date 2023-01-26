@@ -1,15 +1,6 @@
 const Handlebars = require("handlebars");
 const fs = require("fs");
 
-// ------------------------------------------------------------
-
-const adjustedNumber = ( num, size ) => {
-    let s = "00" + num;
-    return s.substring(s.length-size);
-    };
-
-const weekday = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-const month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
 // ------------------------------------------------------------
 
@@ -17,27 +8,16 @@ exports.handler = async (event) => {
 
     const { name } = event.queryStringParameters;
 
-    const today   = new Date(),
-        currentHour   = adjustedNumber( today.getHours(), 2 ),
-        currentMinute = adjustedNumber( today.getMinutes(), 2 ),
-        currentSecond = adjustedNumber( today.getSeconds(), 2 );
+    const options = {
+        year: 'numeric', month: 'short', day: 'numeric',
+        hour: 'numeric', minute: 'numeric', second: 'numeric',
+        hour12: false,
+        timeZone: 'Australia/Sydney',
+        timeZoneName: 'short'
+    };
 
-    const local_timestamp =      "| " + 
-                                Intl.DateTimeFormat().resolvedOptions().timeZone + 
-                                " |\n on \n" +
-                                weekday[today.getDay()] + 
-                                ". ➡️ " + 
-                                adjustedNumber(today.getDate(),2) + 
-                                "." + 
-                                month[today.getMonth()]+ 
-                                "." + 
-                                today.getFullYear() + 
-                                " @ " + 
-                                currentHour + 
-                                ":" + 
-                                currentMinute + 
-                                ":" + 
-                                currentSecond;
+    const today   = new Date();
+    const local_timestamp = new Intl.DateTimeFormat('en-AU', options).format(today);
 
     let data = { 
         name: name || "World", 
