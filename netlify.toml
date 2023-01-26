@@ -1,7 +1,7 @@
 [build]
     publish     = "public"
     functions   = "netlify/functions"
-    command     = "no build command"
+    # command     = "no build command"
 
 [dev]
     autoLaunch=true
